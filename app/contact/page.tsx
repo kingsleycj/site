@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContactPanel } from "@/components/panels/ContactPanel";
 import { Shell } from "@/components/shell/Shell";
 import { panelById } from "@/lib/panels";
 
@@ -11,5 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Shell panel="contact" />;
+  return (
+    <Shell panel="contact">
+      <ContactPanel />
+    </Shell>
+  );
 }

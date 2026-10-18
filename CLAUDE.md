@@ -7,7 +7,8 @@ Read `DESIGN.md` for the design system and `PRODUCT.md` for product truth before
 - `npm run dev` · `npm run build` · `npm start`
 - `npm run check` = `tsc --noEmit` + `eslint .` + `node --test tests/**/*.test.ts` (no test framework; Node 24 strips types)
 - Screenshots for QA: Playwright lives outside the repo (see scratchpad notes in the session), never as a dependency. On this machine Playwright 1.63 matches the cached Chromium build; newer browser downloads fail on this OS.
-- Never branch rendered markup on `useReducedMotion()`; see DESIGN.md. `MotionProvider` handles reduced motion globally.
+- Motion runs under `LazyMotion strict`: use `m.div`/`m.span`, never `motion.*`, and no `layout`/`layoutId` (not in the `domAnimation` feature set). Prefer CSS for anything continuous. Never branch rendered markup on reduced-motion during render; `MotionProvider` handles it.
+- Portraits: use `Portrait` (pre-made WebP in `public/images/portrait/`); re-export from the PNG sources with ImageMagick if the photo changes. Don't use `next/image`'s `priority`/`preload` for anything with a hidden theme or device variant.
 - Before calling any layout change done, probe every route (panels, case pages, 404) at phone and tablet widths for elements outside the viewport, not just the panels; a `truncate` inside a grid or flex item needs `min-w-0` on the item or the card grows past the screen.
 - Palette and layout follow `reference/refrerence-1.png` (neutral near-black and #f5f5f5, one green, the blue-lilac work stage); the headline treatment follows `reference/reference-2.jpeg` (chips plus one italic serif word). No per-project colour worlds, no decorative chips or counts.
 
@@ -15,7 +16,7 @@ Read `DESIGN.md` for the design system and `PRODUCT.md` for product truth before
 - `content/` — every word and number on the site, typed by `content/types.ts`. Components never hard-code copy.
 - `lib/` — `fonts.ts` (the only place fonts are declared), `panels.ts` (panel registry and routes), `theme.ts` (no-flash script + hook), `motion.ts`, `contrast.ts`, `cn.ts`.
 - `components/ui` primitives · `components/fx` effects · `components/shell` the app frame · `components/panels` one file per panel · `components/hero` · `components/work`.
-- `app/` — thin routes: `/`, `/about`, `/path`, `/work`, `/toolkit`, `/now`, `/contact` render the shell with the active panel; `/work/[slug]` case studies; `not-found`, `opengraph-image`, `sitemap`, `robots`.
+- `app/` — thin routes: `/`, `/about`, `/path`, `/work`, `/toolkit`, `/now`, `/contact` each render `<Shell panel="…"><ThatPanel /></Shell>` (the route's own room as children; the others load through `components/panels/index.tsx`); `/work/[slug]` case studies; `not-found`, `opengraph-image`, `sitemap`, `robots`.
 - `public/screens` WebP captures of the live sites · `public/fonts` font files (+ README) · `public/images/kingsley-dark.png` + `kingsley-colored.png` (theme-matched portraits) · `public/resume/`.
 - `tests/` — content guardrails, token contrast, panel registry.
 

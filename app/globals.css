@@ -297,6 +297,33 @@ html:not([data-js]) [data-reveal] { opacity: 1 !important; transform: none !impo
   box-shadow: var(--shadow-1);
 }
 
+/* Hero depth (components/fx/Parallax.tsx). Pointer devices: layers follow --px/--py through a transition.
+   Touch devices: the same layers drift on a slow loop. Both animate only `translate` (compositor). */
+.parallax-layer {
+  translate: calc(var(--px, 0) * var(--depth, 0) * 1px) calc(var(--py, 0) * var(--depth, 0) * 1px);
+  transition: translate 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes drift {
+  0%, 100% { translate: 0 0; }
+  25% { translate: calc(var(--depth, 0) * 0.9px) calc(var(--depth, 0) * -0.7px); }
+  50% { translate: calc(var(--depth, 0) * -0.6px) calc(var(--depth, 0) * 0.5px); }
+  75% { translate: calc(var(--depth, 0) * 0.5px) calc(var(--depth, 0) * 0.8px); }
+}
+@media (pointer: coarse) {
+  .parallax-layer { transition: none; animation: drift 11s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax-layer { animation: none; transition: none; translate: none; }
+}
+
+/* Phones and tablets: a page reached by navigating arrives with a short rise-and-fade (the desktop
+   slides instead). Never on first load: the landing page must paint at once. */
+@keyframes page-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (width < 64rem) {
+  .panel[data-enter] { animation: page-in 420ms var(--ease-out) both; }
+}
+@media (prefers-reduced-motion: reduce) { .panel[data-enter] { animation: none; } }
+
 /* Theme-matched screenshots: both render, CSS shows the right one. */
 :root[data-theme="light"] .screen-dark { display: none; }
 :root:not([data-theme="light"]) .screen-light { display: none; }

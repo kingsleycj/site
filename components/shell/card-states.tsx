@@ -41,7 +41,7 @@ export function HomeState() {
     <div className="flex h-full flex-col">
       <div className="card-portrait relative min-h-0 flex-[1.15]">
         <Socials className="absolute right-4 top-4 z-10 flex flex-col gap-2" />
-        <Portrait priority />
+        <Portrait important sizes="(min-width: 1440px) 380px, 360px" />
       </div>
       <div className="flex flex-col gap-4 px-7 pb-7 pt-5">
         <div className="flex flex-col gap-2">

@@ -20,7 +20,7 @@ export interface PanelProps {
  * Inactive slides are inert so focus never lands offscreen.
  */
 export function Panel({ id, children, bare, className }: PanelProps) {
-  const { active, go } = useShell();
+  const { active, go, moved } = useShell();
   const isActive = active === id;
   const i = panelIndex(id);
   const nextId = panelOrder[i + 1];
@@ -32,6 +32,7 @@ export function Panel({ id, children, bare, className }: PanelProps) {
       aria-hidden={!isActive || undefined}
       inert={!isActive || undefined}
       data-active={isActive || undefined}
+      data-enter={(isActive && moved) || undefined}
       className={cn(
         "panel relative w-full min-w-0 shrink-0 shell:h-full shell:overflow-y-auto shell:overscroll-contain",
         "transition-opacity duration-(--dur-panel) ease-in-out",
@@ -61,4 +62,9 @@ export function Panel({ id, children, bare, className }: PanelProps) {
       </div>
     </section>
   );
+}
+
+/** An unmounted room: the same box as a Panel so the sliding track keeps its spacing, but empty and inert. */
+export function PanelSlot({ id }: { id: PanelId }) {
+  return <section id={`panel-${id}`} aria-hidden inert className="panel relative w-full min-w-0 shrink-0 max-shell:hidden shell:h-full shell:opacity-50" />;
 }

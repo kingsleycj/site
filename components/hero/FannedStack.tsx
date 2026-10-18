@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useShell } from "@/components/shell/ShellContext";
 import { ProjectPreview } from "@/components/work/ProjectPreview";
 import { ui } from "@/content/microcopy";
@@ -29,7 +29,7 @@ export function FannedStack({ className }: { className?: string }) {
           const pose = poses[i];
           const index = projects.indexOf(p);
           return (
-            <motion.li
+            <m.li
               key={p.slug}
               className="absolute top-0 w-[52%] left-(--xm) shell:w-[36%] shell:left-(--xd)"
               style={{ zIndex: five.length - i, "--xm": `${pose.xm}%`, "--xd": `${pose.xd}%` } as React.CSSProperties}
@@ -37,6 +37,7 @@ export function FannedStack({ className }: { className?: string }) {
               animate={{ opacity: 1, y: pose.y, rotate: pose.rotate }}
               transition={{ ...spring.stage, delay: 0.06 * i }}
               whileHover={{ y: pose.y - 14, rotate: pose.rotate * 0.4, scale: 1.03, zIndex: 20 }}
+              whileTap={{ scale: 0.97 }}
             >
               <a
                 href={`/work/${p.slug}`}
@@ -49,9 +50,9 @@ export function FannedStack({ className }: { className?: string }) {
                 className="block rounded-lg shadow-2 outline-offset-4"
                 aria-label={`${p.name}: ${p.kicker}. ${p.status.label}.`}
               >
-                <ProjectPreview project={p} priority={i === 0} />
+                <ProjectPreview project={p} />
               </a>
-            </motion.li>
+            </m.li>
           );
         })}
       </ul>

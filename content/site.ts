@@ -15,12 +15,15 @@ export const site = {
   copyrightYear: 2026,
   greeting: "Hey, I'm Kingsley",
   bio: "Software engineer in Lagos. I build backends, payment rails, AI systems and whole websites that hold up. Lately, HumStage.",
-  /** Two cut-outs of the same portrait: the dark-filtered one for dark mode, the natural one for light. */
+  /**
+   * Two cut-outs of the same portrait, pre-made as WebP at 320/480/640/896px plus a 160px avatar
+   * (public/images/portrait): the dark-filtered one for dark mode, the natural one for light.
+   * The original PNGs stay in public/images as the source for the share image and future re-exports.
+   */
   photo: {
-    dark: "/images/kingsley-dark.png",
-    light: "/images/kingsley-colored.png",
-    /** Used where only one file can be shown, such as the share image. */
-    src: "/images/kingsley-dark.png",
+    dir: "/images/portrait",
+    /** Used where only one file can be shown, such as structured data. */
+    src: "/images/portrait/kingsley-colored-896.webp",
     alt: "Kingsley Nweke, wearing glasses and a black shirt, looking straight at the camera.",
     width: 896,
     height: 1200,

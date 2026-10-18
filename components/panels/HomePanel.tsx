@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { useState } from "react";
 import { ChipHeadline } from "@/components/hero/ChipHeadline";
 import { HeroSwitch, type HeroState } from "@/components/hero/HeroSwitch";
@@ -44,7 +44,7 @@ export function HomePanel() {
         <div className="relative mt-4 flex min-h-0 flex-1 flex-col">
           <AnimatePresence mode="wait" initial={false}>
             {state === "pitch" ? (
-              <motion.div key="pitch" {...fade} className="grid min-h-0 flex-1 gap-4 shell:grid-cols-12 shell:grid-rows-[auto_minmax(0,1fr)] shell:gap-x-6 shell:gap-y-0">
+              <m.div key="pitch" {...fade} className="grid min-h-0 flex-1 gap-4 shell:grid-cols-12 shell:grid-rows-[auto_minmax(0,1fr)] shell:gap-x-6 shell:gap-y-0">
                 <div className="relative z-10 shell:col-span-11 shell:col-start-1 shell:row-start-1">
                   <ChipHeadline option={headlines.primary} id="panel-home-title" />
                 </div>
@@ -52,9 +52,9 @@ export function HomePanel() {
                 <div className="ribbon-band mx-auto flex w-full max-w-[520px] items-end shell:col-span-8 shell:col-start-5 shell:row-span-2 shell:row-start-1 shell:mx-0 shell:min-h-0 shell:max-w-none shell:pt-[6%]">
                   <Ribbon />
                 </div>
-              </motion.div>
+              </m.div>
             ) : (
-              <motion.div key="proof" {...fade} className="grid min-h-0 flex-1 gap-5 shell:grid-rows-[auto_minmax(0,1fr)]">
+              <m.div key="proof" {...fade} className="grid min-h-0 flex-1 gap-5 shell:grid-rows-[auto_minmax(0,1fr)]">
                 <h1 id="panel-home-title" className="text-display-lg font-medium text-text">
                   {proofHeadline.lead}{" "}
                   <Chip variant="hero" size="display" className="text-[0.88em] align-[-0.1em]">
@@ -65,7 +65,7 @@ export function HomePanel() {
                 <div className="stack-band min-h-0">
                   <FannedStack className="h-full" />
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>

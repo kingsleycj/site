@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { useState } from "react";
 import { Icon, ThemeToggle, type IconName } from "@/components/ui";
 import { ui } from "@/content/microcopy";
@@ -51,14 +51,14 @@ export function Dock() {
             <DockItem id={p.id} path={p.path} label={p.label} onHover={setHovered} />
             <AnimatePresence>
               {hovered === p.id && (
-                <motion.span key={`hover-${p.id}`} initial={{ opacity: 0, x: 6, scale: 0.9 }} animate={{ opacity: 1, x: 0, scale: 1 }} exit={{ opacity: 0, x: 6, scale: 0.9 }} transition={spring.snappy} className="dock-label" aria-hidden>
+                <m.span key={`hover-${p.id}`} initial={{ opacity: 0, x: 6, scale: 0.9 }} animate={{ opacity: 1, x: 0, scale: 1 }} exit={{ opacity: 0, x: 6, scale: 0.9 }} transition={spring.snappy} className="dock-label" aria-hidden>
                   {labelOf(p.id)}
-                </motion.span>
+                </m.span>
               )}
               {hovered === null && active === p.id && (
-                <motion.span key={`here-${p.id}`} initial={{ opacity: 0, x: 6 }} animate={{ opacity: [0, 1, 1, 0], x: [6, 0, 0, 0] }} transition={{ duration: 2.6, times: [0, 0.08, 0.8, 1], ease: "easeOut" }} className="dock-label" aria-hidden>
+                <m.span key={`here-${p.id}`} initial={{ opacity: 0, x: 6 }} animate={{ opacity: [0, 1, 1, 0], x: [6, 0, 0, 0] }} transition={{ duration: 2.6, times: [0, 0.08, 0.8, 1], ease: "easeOut" }} className="dock-label" aria-hidden>
                   {labelOf(p.id)}
-                </motion.span>
+                </m.span>
               )}
             </AnimatePresence>
           </div>

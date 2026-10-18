@@ -1,62 +1,62 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "motion/react";
-import { createContext, useContext, useEffect, useRef, type ReactNode } from "react";
-import { useReducedMotion } from "@/lib/use-reduced-motion";
-
-interface Ctx {
-  x: MotionValue<number>;
-  y: MotionValue<number>;
-}
-const ParallaxCtx = createContext<Ctx | null>(null);
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 /**
- * Pointer parallax. The group tracks the pointer as -1..1; each layer moves by `depth` px at the edges.
- * Depth 0 is still; positive moves with the pointer (near), negative against it (far). Off under reduced motion.
+ * Depth for the hero graphic, without an animation library.
+ * Desktop: the group writes the pointer position (-1..1) as `--px`/`--py`; each layer's `translate`
+ * follows it by `depth` px through a CSS transition, so only the compositor animates.
+ * Touch screens have no pointer to follow: there the same layers drift on a slow CSS loop instead.
+ * Both are off under reduced motion (see `.parallax-layer` in globals.css).
  */
 export function ParallaxGroup({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const x = useSpring(rx, { stiffness: 60, damping: 18, mass: 0.6 });
-  const y = useSpring(ry, { stiffness: 60, damping: 18, mass: 0.6 });
   useEffect(() => {
     const el = ref.current;
-    if (!el || reduced || !window.matchMedia("(pointer: fine)").matches) return;
+    if (!el || !window.matchMedia("(pointer: fine)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let px = 0;
+    let py = 0;
+    const apply = () => {
+      raf = 0;
+      el.style.setProperty("--px", px.toFixed(3));
+      el.style.setProperty("--py", py.toFixed(3));
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
-      rx.set(((e.clientX - r.left) / r.width) * 2 - 1);
-      ry.set(((e.clientY - r.top) / r.height) * 2 - 1);
+      px = ((e.clientX - r.left) / r.width) * 2 - 1;
+      py = ((e.clientY - r.top) / r.height) * 2 - 1;
+      schedule();
     };
     const onLeave = () => {
-      rx.set(0);
-      ry.set(0);
+      px = 0;
+      py = 0;
+      schedule();
     };
     el.addEventListener("pointermove", onMove, { passive: true });
     el.addEventListener("pointerleave", onLeave);
     return () => {
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerleave", onLeave);
+      cancelAnimationFrame(raf);
     };
-  }, [reduced, rx, ry]);
+  }, []);
   return (
-    <ParallaxCtx.Provider value={{ x, y }}>
-      <div ref={ref} className={className}>
-        {children}
-      </div>
-    </ParallaxCtx.Provider>
+    <div ref={ref} className={className}>
+      {children}
+    </div>
   );
 }
 
-export function ParallaxLayer({ depth, children, className, style }: { depth: number; children: ReactNode; className?: string; style?: React.CSSProperties }) {
-  const ctx = useContext(ParallaxCtx);
-  const zero = useMotionValue(0);
-  const tx = useTransform(ctx?.x ?? zero, (v) => v * depth);
-  const ty = useTransform(ctx?.y ?? zero, (v) => v * depth);
+/** Depth 0 is still; positive moves with the pointer (near), negative against it (far). */
+export function ParallaxLayer({ depth, children, className, style }: { depth: number; children: ReactNode; className?: string; style?: CSSProperties }) {
   return (
-    <motion.div className={className} style={{ x: tx, y: ty, ...style }}>
+    <div className={cn("parallax-layer", className)} style={{ "--depth": depth, ...style } as CSSProperties}>
       {children}
-    </motion.div>
+    </div>
   );
 }

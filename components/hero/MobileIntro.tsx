@@ -8,7 +8,7 @@ export function MobileIntro() {
     <div className="mb-6 flex flex-col gap-4 shell:hidden">
       <div className="flex items-end gap-4">
         <div className="card-portrait relative h-28 w-24 shrink-0 overflow-hidden rounded-lg">
-          <Portrait sizes="96px" priority />
+          <Portrait sizes="96px" />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1 pb-1">
           <p className="text-display-sm font-medium text-text">{site.greeting}</p>

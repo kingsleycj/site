@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "motion/react";
+import { m, type HTMLMotionProps } from "motion/react";
 import type { ReactNode } from "react";
 import { dur, ease } from "@/lib/motion";
 
@@ -14,7 +14,7 @@ type RevealProps = Omit<HTMLMotionProps<"div">, "children"> & { children?: React
  */
 export function Reveal({ delay = 0, y = 14, once = true, children, ...rest }: RevealProps) {
   return (
-    <motion.div
+    <m.div
       data-reveal=""
       initial={{ opacity: 0, y, filter: "blur(6px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -23,6 +23,6 @@ export function Reveal({ delay = 0, y = 14, once = true, children, ...rest }: Re
       {...rest}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

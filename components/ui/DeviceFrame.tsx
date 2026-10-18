@@ -4,6 +4,7 @@ import { cn } from "@/lib/cn";
 
 export interface DeviceFrameProps {
   screen: Screen;
+  /** The page's main image: fetched at high priority once shown. Never preloaded, since a theme or device variant may be hidden. */
   priority?: boolean;
   sizes?: string;
   className?: string;
@@ -20,7 +21,7 @@ export function DeviceFrame({ screen, priority, sizes = "(min-width: 1024px) 50v
     return (
       <figure className={cn("relative mx-auto aspect-[390/844] w-full max-w-[280px] overflow-hidden rounded-[2.2rem] border-[6px] border-[#0d0d0d] bg-[#0d0d0d] shadow-2", className)}>
         <span className="absolute left-1/2 top-2 z-10 h-5 w-20 -translate-x-1/2 rounded-pill bg-[#0d0d0d]" aria-hidden />
-        <Image src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} sizes="280px" priority={priority} className="h-full w-full object-cover object-top" />
+        <Image src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} sizes="280px" loading="lazy" fetchPriority={priority ? "high" : undefined} className="h-full w-full object-cover object-top" />
       </figure>
     );
   }
@@ -33,7 +34,7 @@ export function DeviceFrame({ screen, priority, sizes = "(min-width: 1024px) 50v
         <span className="mx-auto h-5 w-2/5 rounded-pill bg-sunken" />
       </div>
       <div className="overflow-hidden" style={windowHeight ? { height: windowHeight } : undefined}>
-        <Image src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} sizes={sizes} priority={priority} className={cn("w-full object-cover object-top", !windowHeight && "aspect-[16/10]")} />
+        <Image src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} sizes={sizes} loading="lazy" fetchPriority={priority ? "high" : undefined} className={cn("w-full object-cover object-top", !windowHeight && "aspect-[16/10]")} />
       </div>
     </figure>
   );

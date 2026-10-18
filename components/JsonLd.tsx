@@ -9,7 +9,7 @@ export function JsonLd() {
     "@type": "Person",
     name: site.name,
     url: site.url,
-    image: `${site.url}${site.photo.light}`,
+    image: `${site.url}${site.photo.src}`,
     jobTitle: "Software Engineer",
     email: `mailto:${site.contact.email}`,
     telephone: site.contact.phone.label.replace(/\s/g, ""),

@@ -8,7 +8,7 @@ import { useShell } from "./ShellContext";
 
 const icons: Record<PanelId, IconName> = { home: "home", about: "user", path: "path", work: "work", toolkit: "toolkit", now: "now", contact: "contact" };
 
-/** The dock as a bottom bar on small screens. */
+/** The dock as a bottom bar on small screens: icons only, the active one filled green. */
 export function MobileDock() {
   const { active, go } = useShell();
   return (
@@ -26,13 +26,9 @@ export function MobileDock() {
                   e.preventDefault();
                   go(p.id);
                 }}
-                className={cn(
-                  "flex h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-pill px-2 transition-colors",
-                  isActive ? "bg-accent text-accent-ink" : "text-muted",
-                )}
+                className={cn("grid h-11 w-11 place-items-center rounded-pill transition-colors active:scale-95", isActive ? "bg-accent text-accent-ink" : "text-muted")}
               >
-                <Icon name={icons[p.id]} size={18} />
-                <span className={cn("text-[0.6rem] font-medium leading-none", !isActive && "sr-only")}>{p.label}</span>
+                <Icon name={icons[p.id]} size={19} />
               </a>
             </li>
           );

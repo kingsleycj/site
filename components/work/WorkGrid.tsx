@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useShell } from "@/components/shell/ShellContext";
 import { Icon, StatusBadge, shortStatus } from "@/components/ui";
 import { ui } from "@/content/microcopy";
@@ -27,12 +27,17 @@ export function WorkGrid() {
         {projects.map((p, i) => {
           const active = i === workIndex;
           return (
-            <motion.li
+            <m.li
               key={p.slug}
               id={`project-${p.slug}`}
               data-index={i}
+              data-reveal=""
               className="relative rounded-lg"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: Math.min(i % 3, 2) * 0.06 } }}
+              viewport={{ once: true, margin: "-6% 0px" }}
               whileHover={{ scale: 1.025, y: -4 }}
+              whileTap={{ scale: 0.98 }}
               transition={spring.hover}
               onPointerEnter={() => setWorkIndex(i)}
               onFocus={() => setWorkIndex(i)}
@@ -47,7 +52,7 @@ export function WorkGrid() {
                   <StatusBadge kind={p.status.kind} label={shortStatus[p.status.kind]} note={p.status.note} className="shrink-0 text-muted" />
                 </div>
               </Link>
-            </motion.li>
+            </m.li>
           );
         })}
       </ol>

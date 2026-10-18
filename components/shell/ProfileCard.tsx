@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import type { PanelId } from "@/lib/panels";
 import { dur, ease } from "@/lib/motion";
 import { AboutState, ContactState, HomeState, NowState, PathState, ToolkitState, WorkState } from "./card-states";
@@ -26,7 +26,7 @@ export function ProfileCard() {
       className="relative flex h-full w-[360px] shrink-0 overflow-hidden rounded-xl border border-border bg-raised shadow-1 wide:w-[380px]"
     >
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div
+        <m.div
           key={active}
           className="h-full w-full"
           initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
@@ -35,7 +35,7 @@ export function ProfileCard() {
           transition={{ duration: dur.base, ease: ease.out }}
         >
           <State />
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </aside>
   );

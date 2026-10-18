@@ -15,6 +15,8 @@ export interface ShellState {
   setWorkIndex: (i: number) => void;
   /** True on Home until the visitor has moved to another panel this visit: the next button pulses. */
   hintNext: boolean;
+  /** True once the visitor has moved at least once: rooms play their arrival only after that, never on first load. */
+  moved: boolean;
 }
 
 export const ShellContext = createContext<ShellState | null>(null);
